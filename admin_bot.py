@@ -1,4 +1,4 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler,CallbackQueryHandler, Application, filters
+from telegram.ext import Updater, CommandHandler, MessageHandler,CallbackQueryHandler, Application, filters, ConversationHandler
 from config import get_token
 import handlears
 
@@ -9,11 +9,33 @@ def main():
     dp = Application.builder().token(TOKEN).build()
     
     dp.add_handler(CommandHandler('start', handlears.start))
-    dp.add_handler(CommandHandler('sendfile', handlears.admin_sendpdf))
-    
-    dp.add_handler(MessageHandler(filters.Document.PDF, handlears.save_document))
+
+    conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('register', handlears.user_register)],
+        states={
+            handlears.FAK: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_fak)],
+            handlears.YUN: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_yun)],
+            handlears.KURS: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_kurs)],
+            handlears.NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_name)],
+        },
+        fallbacks=[CommandHandler('cancel', handlears.cancel)]
+    )
+
+    #Admin
+    admin_conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('create', handlears.admin_creat_test)],
+        states={
+            handlears.T_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_testID)],
+            handlears.T_NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_testNAME)],
+            handlears.KURS: [MessageHandler(filters.Document.PDF & ~filters.COMMAND, handlears.ask_testFILE)],
+        },
+        fallbacks=[CommandHandler('cancel', handlears.cancel)]
+
+    )
+
+    dp.add_handler(conv_handler)
+    dp.add_handler(admin_conv_handler)
     dp.add_handler(MessageHandler(filters.TEXT, handlears.send_user_test))
-    dp.add_handler(MessageHandler(filters.TEXT, handlears.user_register))
     dp.run_polling()
 
 

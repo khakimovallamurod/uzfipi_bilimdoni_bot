@@ -17,12 +17,16 @@ def is_admin(chat_id):
     else:
         return False
     
-def save_pdf(file_path: str, file_name: str):
+def is_start(chat_id):
+    user_one = user.get(doc_id=str(chat_id))
+    return user_one == None
+
+def save_pdf(test_id:str,test_name: str,  file_path: str):
     test.insert(
         {
-            "file_path": file_path,
-            "file_name": file_name,
-            'test_id': '1001'
+            'test_id': test_id,
+            "test_name": test_name,
+            "file_path": file_path
         }
     )
     return True
