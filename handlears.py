@@ -6,6 +6,7 @@ import db
 
 FAK, YUN, KURS, NAME = range(4)
 T_ID, T_NAME, T_FILE, T_ANS = range(4)
+T_SEND, T_CHECK = range(2)
 
 async def start(update: Update, context: CallbackContext):
     user = update.message.from_user
@@ -19,7 +20,7 @@ async def start(update: Update, context: CallbackContext):
                 text=f"""Xush kelibsiz. Bu bot orqali onlayn test yechishingiz mumkin, buning uchun /register comandasini bosing.""",
             )
         else:
-            await update.message.reply_text("Test bajarish uchun TEST KODINI yuboring.")
+            await update.message.reply_text("Test bajarish uchun /tests commandasini yuboring!")
 
 
 async def user_register(update: Update, context: CallbackContext):
@@ -56,22 +57,44 @@ async def ask_name(update: Update, context: CallbackContext):
                 kurs=str(kurs),
                 fullname=full_name)
 
-    await update.message.reply_text("✅ Muvaffaqiyatli ro'yxatdan o'tdingiz. Test bajarish uchun TEST KODINI yuboring.")
+    await update.message.reply_text("✅ Muvaffaqiyatli ro'yxatdan o'tdingiz. Test bajarish uchun /tests commandasini yuboring!")
     return ConversationHandler.END
 
 async def cancel(update: Update, context: CallbackContext):
-    await update.message.reply_text('Ro\'yxatdan o\'tish bekor qilindi.')
+    await update.message.reply_text('Amalyot bajarilmadi!')
     return ConversationHandler.END
 
+async def tests_command(update: Update, context: CallbackContext):
+    await update.message.reply_text("TEST KODI ni yuboring:")
+    return T_SEND
+
+# User send test answer
 async def send_user_test(update: Update, context: CallbackContext):
+    test_id = update.message.text.strip()
     user = update.message.from_user
-    test_id = update.message.text
     if not db.is_admin(user.id):
         test_data = db.get_testid(test_id=test_id)
         if test_data != []:
-            await update.message.reply_document(test_data[0]['file_path'])
+            await update.message.reply_document(test_data[0]['file_path'], caption="Test javoblarini tets kodi va kichik harflarda yuboring. \nNamuna: 1001*addabba ... db(Ortiqcha belgilar va bosh joy bo'lmasligi kerak)")
         else:
             await update.message.reply_text(f"❌, Ushbu test kodi mavjud emas, tekshirib ko'ring.")
+    return T_CHECK
+
+async def user_test_check(update: Update, context: CallbackContext):
+    user_answers_data = update.message.text.strip()
+    user_id = update.message.from_user.id
+    user_answers = db.check_user_test(test_answer=user_answers_data, chat_id=str(user_id))
+    
+    user_data = db.user_search(chat_id=str(user_id))
+    if user_answers != None:
+        true_total, false_total, test_count = user_answers
+        await update.message.reply_text(f"""Ismingiz: {user_data['fullname']}.
+✅ To'g'ri yechilgan masala soni: {true_total}.
+❌ Xato yechilgan masala soni: {false_total}.
+Jami masalalar soni: {test_count}.""")
+    else:
+        await update.message.reply_text("Test javoblarini yuborishda xatolik!(Namunadagidek yuborilganligiga ishonch hosil qiling.)")
+    return ConversationHandler.END
 
 # Admin 
 
