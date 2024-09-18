@@ -1,4 +1,4 @@
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
+from telegram import Update
 from telegram.ext import CallbackContext, ConversationHandler
 import keyboards
 import db
@@ -79,26 +79,31 @@ async def admin_creat_test(update: Update, context: CallbackContext):
     await update.message.reply_text("TEST KODI ni yarating:")
     return T_ID
 
-async def ask_testID(update: Update, contesxt: CallbackContext):
-    contesxt.user_data['testID'] = update.message.text
+async def ask_testID(update: Update, context: CallbackContext):
+    context.user_data['testID'] = update.message.text
     await update.message.reply_text("TEST ga nom kiriting(Test nima haqidaligini):")
     return T_NAME
 
 async def ask_testNAME(update: Update, context: CallbackContext):
     context.user_data['testNAME'] = update.message.text.strip().capitalize()
+    await update.message.reply_text("Iltimos, PDF formatida test faylini yuboring:")
     return T_FILE
 
 async def ask_testFILE(update: Update, context: CallbackContext):
     context.user_data['testFILE'] = update.message.document.file_id
-    user = update.message.from_user.id
+    user_id = update.message.from_user.id
     test_id = context.user_data['testID']
     test_name = context.user_data['testNAME']
     file_path = context.user_data['testFILE']
-    if db.is_admin(user.id):
+    
+    if db.is_admin(user_id):
         db.save_pdf(
             test_id=test_id,
             test_name=test_name,
             file_path=file_path
         )
         await update.message.reply_document(file_path, caption=f"✅ Muvaffaqiyatli saqlandi. \nTest nomi: {test_name}. \nTEST KODI: {test_id}")
+    else:
+        await update.message.reply_text("❌ Siz admin emassiz!")
+
     return ConversationHandler.END

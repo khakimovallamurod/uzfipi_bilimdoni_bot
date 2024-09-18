@@ -27,12 +27,10 @@ def main():
         states={
             handlears.T_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_testID)],
             handlears.T_NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_testNAME)],
-            handlears.KURS: [MessageHandler(filters.Document.PDF & ~filters.COMMAND, handlears.ask_testFILE)],
+            handlears.T_FILE: [MessageHandler(filters.Document.ALL & ~filters.COMMAND, handlears.ask_testFILE)], 
         },
         fallbacks=[CommandHandler('cancel', handlears.cancel)]
-
     )
-
     dp.add_handler(conv_handler)
     dp.add_handler(admin_conv_handler)
     dp.add_handler(MessageHandler(filters.TEXT, handlears.send_user_test))
