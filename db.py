@@ -4,9 +4,12 @@ from typing import Union
 from tinydb.database import Document
 
 tests = TinyDB('tests.json', indent = 4)
-users = TinyDB('results.json', indent = 4)
+users = TinyDB('user_data.json', indent = 4)
+results = TinyDB('results.json', indent = 4)
+
 test = tests.table('Test')
 user = users.table('Users')
+result = results.table('Results')
 
 q = Query()
 
@@ -21,12 +24,14 @@ def is_start(chat_id):
     user_one = user.get(doc_id=str(chat_id))
     return user_one == None
 
-def save_pdf(test_id:str,test_name: str,  file_path: str):
+def save_pdf(test_id:str,test_name: str,  file_path: str, test_answer: str):
+    test_answer = test_answer.strip().lower()
     test.insert(
         {
             'test_id': test_id,
             "test_name": test_name,
-            "file_path": file_path
+            "file_path": file_path,
+            "test_answer": test_answer
         }
     )
     return True

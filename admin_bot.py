@@ -28,6 +28,7 @@ def main():
             handlears.T_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_testID)],
             handlears.T_NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_testNAME)],
             handlears.T_FILE: [MessageHandler(filters.Document.ALL & ~filters.COMMAND, handlears.ask_testFILE)], 
+            handlears.T_ANS: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_testANSWER)],
         },
         fallbacks=[CommandHandler('cancel', handlears.cancel)]
     )

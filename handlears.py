@@ -5,7 +5,7 @@ import db
 
 
 FAK, YUN, KURS, NAME = range(4)
-T_ID, T_NAME, T_FILE = range(3)
+T_ID, T_NAME, T_FILE, T_ANS = range(4)
 
 async def start(update: Update, context: CallbackContext):
     user = update.message.from_user
@@ -91,16 +91,21 @@ async def ask_testNAME(update: Update, context: CallbackContext):
 
 async def ask_testFILE(update: Update, context: CallbackContext):
     context.user_data['testFILE'] = update.message.document.file_id
+    await update.message.reply_text("TEST Javoblarini yuboring xatolik yo'qligiga ishonch hosil qiling bu tekshirishda katta ahamiyatga ega.\nNamuna: abcdaadd...d(Kichik harflarda ketma-ket kiriting).")
+    return T_ANS
+async def ask_testANSWER(update: Update, context: CallbackContext):
+    context.user_data['testANSWER'] = update.message.text
     user_id = update.message.from_user.id
     test_id = context.user_data['testID']
     test_name = context.user_data['testNAME']
     file_path = context.user_data['testFILE']
-    
+    test_answer = context.user_data['testANSWER']
     if db.is_admin(user_id):
         db.save_pdf(
             test_id=test_id,
             test_name=test_name,
-            file_path=file_path
+            file_path=file_path,
+            test_answer=test_answer
         )
         await update.message.reply_document(file_path, caption=f"✅ Muvaffaqiyatli saqlandi. \nTest nomi: {test_name}. \nTEST KODI: {test_id}")
     else:

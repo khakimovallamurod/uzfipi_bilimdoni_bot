@@ -9,6 +9,12 @@
             "test_id": "1101",
             "test_name": "Natural sonlar",
             "file_path": "BQACAgIAAxkBAAIBc2bqUxjawAWsnE1lPBX0xPxG3VUjAAIaSAACWS4JSc6L3kPyy1EWNgQ"
+        },
+        "3": {
+            "test_id": "1110",
+            "test_name": "Kasr sonlar",
+            "file_path": "BQACAgIAAxkBAAIBgWbqb2QzRlhnlijfvKUL4XeeqJq5AAKWVAACR3o5S25gpECKvmRdNgQ",
+            "test_answer": "asdaasdadafafadafafafafdadd"
         }
     }
 }
