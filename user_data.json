@@ -1,0 +1,22 @@
+{
+    "Users": {
+        "12353": {
+            "fakultitet": "Intlk",
+            "yunalish": "DI",
+            "kurs": "3",
+            "fullname": "X.A"
+        },
+        "5907682059": {
+            "fakultitet": "Intelktual Tizimlar",
+            "yunalish": "Di",
+            "kurs": "3",
+            "fullname": "Xakimov Allamurod"
+        },
+        "1977025341": {
+            "fakultitet": "Matematika",
+            "yunalish": "Matimatika Informatika",
+            "kurs": "4",
+            "fullname": "Shokirov Jamshid"
+        }
+    }
+}

@@ -4,9 +4,12 @@ from typing import Union
 from tinydb.database import Document
 
 tests = TinyDB('tests.json', indent = 4)
-users = TinyDB('results.json', indent = 4)
+users = TinyDB('user_data.json', indent = 4)
+results = TinyDB('results.json')
+
 test = tests.table('Test')
 user = users.table('Users')
+result = results.table('Results')
 
 q = Query()
 
