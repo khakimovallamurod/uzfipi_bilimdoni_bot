@@ -9,7 +9,6 @@ results = TinyDB('results.json', indent = 4)
 
 test = tests.table('Test')
 user = users.table('Users')
-result = results.table('Results')
 
 q = Query()
 
@@ -52,11 +51,11 @@ def get_testid(test_id):
     return test_one
 
 def result_save(true_total, false_total, test_id, chat_id):
-    result.insert(document=Document({
+    user_one_result = results.table(str(chat_id))
+    user_one_result.insert(document=Document({
             "true_total": true_total,
             "false_total": false_total,
-            "test_ID": test_id,
-        }, doc_id = chat_id))
+        }, doc_id = test_id))
     
 def check_user_test(test_answer: str, chat_id):
     test_data = test_answer.split('*')

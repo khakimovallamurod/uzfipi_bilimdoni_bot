@@ -92,9 +92,11 @@ async def user_test_check(update: Update, context: CallbackContext):
 ✅ To'g'ri yechilgan masala soni: {true_total}.
 ❌ Xato yechilgan masala soni: {false_total}.
 Jami masalalar soni: {test_count}.""")
+        return ConversationHandler.END
     else:
         await update.message.reply_text("Test javoblarini yuborishda xatolik!(Namunadagidek yuborilganligiga ishonch hosil qiling.)")
-    return ConversationHandler.END
+        return T_CHECK
+
 
 # Admin 
 
