@@ -4,6 +4,23 @@
             "file_path": "BQACAgIAAxkBAAPxZugRm74YNJodGf-m0_OTbwZL35oAAphNAAJezZBIxMjy4F03zDU2BA",
             "file_name": "12-namunaviy test.pdf",
             "test_id": "1001"
+        },
+        "2": {
+            "test_id": "1101",
+            "test_name": "Natural sonlar",
+            "file_path": "BQACAgIAAxkBAAIBc2bqUxjawAWsnE1lPBX0xPxG3VUjAAIaSAACWS4JSc6L3kPyy1EWNgQ"
+        },
+        "3": {
+            "test_id": "1110",
+            "test_name": "Kasr sonlar",
+            "file_path": "BQACAgIAAxkBAAIBgWbqb2QzRlhnlijfvKUL4XeeqJq5AAKWVAACR3o5S25gpECKvmRdNgQ",
+            "test_answer": "asdaasdadafafadafafafafdadd"
+        },
+        "4": {
+            "test_id": "1112",
+            "test_name": "Matetamtika",
+            "file_path": "BQACAgIAAxkBAAIBt2bsXDSWLB7EZ6TzKdrXy_nz0ihGAALURwACWS4JSbKTTq081F4eNgQ",
+            "test_answer": "aabbccddaabbccddaabd"
         }
     }
 }

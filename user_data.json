@@ -6,17 +6,17 @@
             "kurs": "3",
             "fullname": "X.A"
         },
+        "1977025341": {
+            "fakultitet": "Mate",
+            "yunalish": "In",
+            "kurs": "3",
+            "fullname": "Shj"
+        },
         "5907682059": {
             "fakultitet": "Intelktual Tizimlar",
             "yunalish": "Di",
             "kurs": "3",
             "fullname": "Xakimov Allamurod"
-        },
-        "1977025341": {
-            "fakultitet": "Matematika",
-            "yunalish": "Matimatika Informatika",
-            "kurs": "4",
-            "fullname": "Shokirov Jamshid"
         }
     }
 }
