@@ -64,18 +64,19 @@ async def cancel(update: Update, context: CallbackContext):
     await update.message.reply_text('Amalyot bajarilmadi!')
     return ConversationHandler.END
 
+# User test check
 async def tests_command(update: Update, context: CallbackContext):
     await update.message.reply_text("TEST KODI ni yuboring:")
     return T_SEND
 
-# User send test answer
 async def send_user_test(update: Update, context: CallbackContext):
     test_id = update.message.text.strip()
     user = update.message.from_user
     if not db.is_admin(user.id):
         test_data = db.get_testid(test_id=test_id)
         if test_data != []:
-            await update.message.reply_document(test_data[0]['file_path'], caption="Test javoblarini tets kodi va kichik harflarda yuboring. \nNamuna: 1001*addabba ... db(Ortiqcha belgilar va bosh joy bo'lmasligi kerak)")
+            await update.message.reply_document(test_data[0]['file_path'], caption=f"""Testning javoblarini ushbu botga @uzfipi_bilimdoni_bot
+Maskur ✍️ Test kodi: {test_id}.\nNamuna: {test_id}*addabba ... db yoki {test_id}*1a2b3a4d.....29a30c(Ortiqcha belgilar va bosh joy bo'lmasligi kerak)""")
         else:
             await update.message.reply_text(f"❌, Ushbu test kodi mavjud emas, tekshirib ko'ring.")
     return T_CHECK

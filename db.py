@@ -59,6 +59,8 @@ def result_save(true_total, false_total, test_id, chat_id):
     
 def check_user_test(test_answer: str, chat_id):
     test_data = test_answer.split('*')
+    if len(test_data) != 2:
+        return 'error_testid'
     test_id, user_answer = test_data[0].strip(), test_data[1].strip().lower()
     true_test = get_testid(test_id=test_id)
     if true_test == []:
