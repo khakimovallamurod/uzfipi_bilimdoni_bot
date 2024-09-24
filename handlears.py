@@ -100,15 +100,20 @@ Jami masalalar soni: {test_count}.""")
 
 
 # Admin 
-
 async def admin_creat_test(update: Update, context: CallbackContext):
     await update.message.reply_text("TEST KODI ni yarating:")
     return T_ID
 
 async def ask_testID(update: Update, context: CallbackContext):
-    context.user_data['testID'] = update.message.text
-    await update.message.reply_text("TEST ga nom kiriting(Test nima haqidaligini):")
-    return T_NAME
+    test_ID = update.message.text
+    check_testID = db.get_testid(str(test_ID))
+    if check_testID == []:
+        context.user_data['testID'] = test_ID
+        await update.message.reply_text("TEST ga nom kiriting(Test nima haqidaligini):")
+        return T_NAME
+    else:
+        await update.message.reply_text("Siz yuborgan TEST KODI mavjud, iltimos yangi yarating:")
+        return T_ID
 
 async def ask_testNAME(update: Update, context: CallbackContext):
     context.user_data['testNAME'] = update.message.text.strip().capitalize()
