@@ -3,10 +3,14 @@ from telegram.ext import CallbackContext, ConversationHandler
 import keyboards
 import db
 
-
+# User
 FAK, YUN, KURS, NAME = range(4)
+# Admin
 T_ID, T_NAME, T_FILE, T_ANS = range(4)
+# User TEST Check
 T_SEND, T_CHECK = range(2)
+# Admin TEST Result
+RES_ID = range(1)
 
 async def start(update: Update, context: CallbackContext):
     user = update.message.from_user
@@ -142,4 +146,32 @@ async def ask_testANSWER(update: Update, context: CallbackContext):
     else:
         await update.message.reply_text("❌ Siz admin emassiz!")
 
+    return ConversationHandler.END
+
+# Admin get  results
+async def admin_get_results(update: Update, context: CallbackContext):
+    await update.message.reply_text("TEST KODI ni yuboring:")
+    return RES_ID
+
+async def get_results_user(update: Update, context: CallbackContext):
+    test_ID = update.message.text
+    user = update.message.from_user
+    if db.is_admin(user.id):
+        users_data = db.admin_get_result(str(test_ID))
+        result_data = """"""
+        if users_data!=[]:
+            for idx, user_res in enumerate(users_data):
+                if idx==0:
+                    result_data += f"🥇 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']}"
+                elif idx==1:
+                    result_data += f"🥈 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']}"
+                elif idx == 2:
+                    result_data += f"🥉 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']}"
+                else:
+                    result_data += f"{idx+1}. Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']}"
+        else:
+            result_data = "Siz yuborgan test kodida natijalar yo'q."
+        await update.message.reply_text(result_data)
+    else:
+        await update.message.reply_text("❌ Siz admin emassiz!")
     return ConversationHandler.END
