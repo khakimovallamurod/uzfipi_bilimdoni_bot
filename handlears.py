@@ -162,13 +162,13 @@ async def get_results_user(update: Update, context: CallbackContext):
         if users_data!=[]:
             for idx, user_res in enumerate(users_data):
                 if idx==0:
-                    result_data += f"🥇 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']}"
+                    result_data += f"🥇 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']} ta\n"
                 elif idx==1:
-                    result_data += f"🥈 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']}"
+                    result_data += f"🥈 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']} ta\n"
                 elif idx == 2:
-                    result_data += f"🥉 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']}"
+                    result_data += f"🥉 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']} ta\n"
                 else:
-                    result_data += f"{idx+1}. Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']}"
+                    result_data += f"{idx+1}. Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']} ta\n"
         else:
             result_data = "Siz yuborgan test kodida natijalar yo'q."
         await update.message.reply_text(result_data)
