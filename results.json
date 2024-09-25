@@ -7,6 +7,16 @@
         "1110": {
             "true_total": 27,
             "false_total": 0
+        },
+        "1011": {
+            "true_total": 18,
+            "false_total": 0
+        }
+    },
+    "5466480235": {
+        "1011": {
+            "true_total": 18,
+            "false_total": 0
         }
     }
 }
