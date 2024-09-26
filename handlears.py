@@ -6,7 +6,10 @@ import db
 
 FAK, YUN, KURS, TEL, NAME = range(5)
 T_ID, T_NAME, T_FILE, T_ANS = range(4)
+# User TEST Check
 T_SEND, T_CHECK = range(2)
+# Admin TEST Result
+RES_ID = range(1)
 
 async def start(update: Update, context: CallbackContext):
     user = update.message.from_user
@@ -112,15 +115,20 @@ Jami masalalar soni: {test_count}.""")
 
 
 # Admin 
-
 async def admin_creat_test(update: Update, context: CallbackContext):
     await update.message.reply_text("TEST KODI ni yarating:")
     return T_ID
 
 async def ask_testID(update: Update, context: CallbackContext):
-    context.user_data['testID'] = update.message.text
-    await update.message.reply_text("TEST ga nom kiriting(Test nima haqidaligini):")
-    return T_NAME
+    test_ID = update.message.text
+    check_testID = db.get_testid(str(test_ID))
+    if check_testID == []:
+        context.user_data['testID'] = test_ID
+        await update.message.reply_text("TEST ga nom kiriting(Test nima haqidaligini):")
+        return T_NAME
+    else:
+        await update.message.reply_text("Siz yuborgan TEST KODI mavjud, iltimos yangi yarating:")
+        return T_ID
 
 async def ask_testNAME(update: Update, context: CallbackContext):
     context.user_data['testNAME'] = update.message.text.strip().capitalize()
@@ -149,4 +157,32 @@ async def ask_testANSWER(update: Update, context: CallbackContext):
     else:
         await update.message.reply_text("❌ Siz admin emassiz!")
 
+    return ConversationHandler.END
+
+# Admin get  results
+async def admin_get_results(update: Update, context: CallbackContext):
+    await update.message.reply_text("TEST KODI ni yuboring:")
+    return RES_ID
+
+async def get_results_user(update: Update, context: CallbackContext):
+    test_ID = update.message.text
+    user = update.message.from_user
+    if db.is_admin(user.id):
+        users_data = db.admin_get_result(str(test_ID))
+        result_data = """"""
+        if users_data!=[]:
+            for idx, user_res in enumerate(users_data):
+                if idx==0:
+                    result_data += f"🥇 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, Telafon nomer: {user_res['nomer']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']} ta\n"
+                elif idx==1:
+                    result_data += f"🥈 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, Telafon nomer: {user_res['nomer']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']} ta\n"
+                elif idx == 2:
+                    result_data += f"🥉 Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, Telafon nomer: {user_res['nomer']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']} ta\n"
+                else:
+                    result_data += f"{idx+1}. Fakultitet: {user_res['fakultitet']}, Yo'nalish: {user_res['yunalish']}, Kurs: {user_res['kurs']}, Telafon nomer: {user_res['nomer']}, FIO: {user_res['fullname']}, Natija: {user_res['true_total']} ta\n"
+        else:
+            result_data = "Siz yuborgan test kodida natijalar yo'q."
+        await update.message.reply_text(result_data)
+    else:
+        await update.message.reply_text("❌ Siz admin emassiz!")
     return ConversationHandler.END

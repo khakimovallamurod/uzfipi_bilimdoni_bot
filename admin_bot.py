@@ -32,6 +32,7 @@ def main():
         },
         fallbacks=[CommandHandler('cancel', handlears.cancel)]
     )
+    #User
     user_test_handler = ConversationHandler(
         entry_points=[CommandHandler('tests', handlears.tests_command)],
         states={
@@ -40,11 +41,18 @@ def main():
         },
         fallbacks=[CommandHandler('cancel', handlears.cancel)]
     )
-
+    # Admin get result
+    admin_get_results = ConversationHandler(
+        entry_points=[CommandHandler('results', handlears.admin_get_results)],
+        states={
+            handlears.RES_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.get_results_user)],
+        },
+        fallbacks=[CommandHandler('cancel', handlears.cancel)]
+    )
     dp.add_handler(conv_handler)
     dp.add_handler(admin_conv_handler)
     dp.add_handler(user_test_handler)
-    # dp.add_handler(MessageHandler(filters.TEXT, handlears.send_user_test))
+    dp.add_handler(admin_get_results)
     dp.run_polling()
 
 

@@ -89,3 +89,16 @@ def check_user_test(test_answer: str, chat_id):
         return true_total, false_total, len(true_test)
     else:
         return None
+
+def admin_get_result(testID: str):
+    table_all = sorted(list(results.tables()))
+    result_user_data = []
+    for table in table_all:
+        table_data = results.table(table).get(doc_id=testID)
+        if table_data != None:
+            user_data = user_search(table)
+            user_data['true_total'] = table_data['true_total']
+            user_data['false_total'] = table_data['false_total']
+            result_user_data.append(user_data)
+    result_user_data = sorted(result_user_data, key=lambda x: x['true_total'], reverse=True)
+    return result_user_data
