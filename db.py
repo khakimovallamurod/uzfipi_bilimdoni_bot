@@ -74,19 +74,20 @@ def check_user_test(test_answer: str, chat_id):
     for alp in true_test_answer:
         if alp.isalpha():
             true_test_filter+=alp
-    
+    print(true_test_filter)
+    print(user_answer)
     if len(test_data) != 2:
         return 'error_testid'
     elif len(true_test_filter) == len(user_answer) and user_answer.isalpha():
         true_total, false_total = 0, 0
-        for t_a, t_u in zip(true_test, user_answer):
+        for t_a, t_u in zip(true_test_filter, user_answer):
             if t_a == t_u:
                 true_total += 1
             else:
                 false_total += 1
         
         result_save(true_total, false_total, test_id, chat_id)
-        return true_total, false_total, len(true_test)
+        return true_total, false_total, len(true_test_filter)
     else:
         return None
 
