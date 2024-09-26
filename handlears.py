@@ -4,7 +4,7 @@ import keyboards
 import db
 
 
-FAK, YUN, KURS, NAME = range(4)
+FAK, YUN, KURS, TEL, NAME = range(5)
 T_ID, T_NAME, T_FILE, T_ANS = range(4)
 T_SEND, T_CHECK = range(2)
 
@@ -17,7 +17,8 @@ async def start(update: Update, context: CallbackContext):
     else:
         if db.is_start(str(user.id)):
             await update.message.reply_text(
-                text=f"""Xush kelibsiz. Bu bot orqali onlayn test yechishingiz mumkin, buning uchun /register comandasini bosing.""",
+                text=f"""Xush kelibsiz. Bu bot orqali onlayn test yechishingiz mumkin, buning uchun register tugmasini bosing.""",
+                reply_markup=keyboards.register_button
             )
         else:
             await update.message.reply_text("Test bajarish uchun /tests commandasini yuboring!")
@@ -29,7 +30,7 @@ async def user_register(update: Update, context: CallbackContext):
 
 async def ask_fak(update: Update, context: CallbackContext):
     context.user_data['fakultitet'] = update.message.text.strip().title()
-    await update.message.reply_text("Yunalishingizni kiriting:")
+    await update.message.reply_text("Yo'nalishingizni kiriting:")
     return YUN
 
 async def ask_yun(update: Update, context: CallbackContext):
@@ -39,6 +40,11 @@ async def ask_yun(update: Update, context: CallbackContext):
 
 async def ask_kurs(update: Update, context: CallbackContext):
     context.user_data['kurs'] = update.message.text.strip()
+    await update.message.reply_text("Telafon nomeringizni kiriting: ")
+    return TEL
+
+async def ask_tel(update: Update, context: CallbackContext):
+    context.user_data['tel'] = update.message.text.strip()
     await update.message.reply_text("To'liq ism-familiyangizni kiriting:")
     return NAME
 
@@ -48,6 +54,7 @@ async def ask_name(update: Update, context: CallbackContext):
     fakultitet = context.user_data['fakultitet']
     yunalish = context.user_data['yunalish']
     kurs = context.user_data['kurs']
+    nomer = context.user_data['tel']
     full_name = context.user_data['fullname']
     user_id = update.message.from_user.id
 
@@ -55,6 +62,7 @@ async def ask_name(update: Update, context: CallbackContext):
                 fak=fakultitet,
                 yunlish=yunalish,
                 kurs=str(kurs),
+                nomer=str(nomer),
                 fullname=full_name)
 
     await update.message.reply_text("✅ Muvaffaqiyatli ro'yxatdan o'tdingiz. Test bajarish uchun /tests commandasini yuboring!")
@@ -77,9 +85,10 @@ async def send_user_test(update: Update, context: CallbackContext):
         if test_data != []:
             await update.message.reply_document(test_data[0]['file_path'], caption=f"""Testning javoblarini ushbu botga @uzfipi_bilimdoni_bot
 Maskur ✍️ Test kodi: {test_id}.\nNamuna: {test_id}*addabba ... db yoki {test_id}*1a2b3a4d.....29a30c(Ortiqcha belgilar va bosh joy bo'lmasligi kerak)""")
+            return T_CHECK
         else:
-            await update.message.reply_text(f"❌, Ushbu test kodi mavjud emas, tekshirib ko'ring.")
-    return T_CHECK
+            await update.message.reply_text(f"❌ Ushbu test kodi mavjud emas, tekshirib ko'ring.")
+            return T_SEND
 
 async def user_test_check(update: Update, context: CallbackContext):
     user_answers_data = update.message.text.strip()
@@ -87,6 +96,9 @@ async def user_test_check(update: Update, context: CallbackContext):
     user_answers = db.check_user_test(test_answer=user_answers_data, chat_id=str(user_id))
     
     user_data = db.user_search(chat_id=str(user_id))
+    if user_answers == "error_testid":
+        await update.message.reply_text("Testni yuborishda xato qildingiz test kodi bilan yuborganizga ishonch hosil qiling.")
+        return T_CHECK 
     if user_answers != None:
         true_total, false_total, test_count = user_answers
         await update.message.reply_text(f"""Ismingiz: {user_data['fullname']}.

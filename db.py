@@ -35,11 +35,12 @@ def save_pdf(test_id:str,test_name: str,  file_path: str, test_answer: str):
     )
     return True
 
-def register(chat_id, fak, yunlish, kurs, fullname):
+def register(chat_id, fak, yunlish, kurs,nomer, fullname):
     user.insert(document=Document({
         "fakultitet": fak,
         "yunalish": yunlish,
         "kurs": kurs,
+        "nomer": nomer,
         "fullname": fullname,
     }, doc_id = chat_id))
 
