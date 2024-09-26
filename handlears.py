@@ -116,7 +116,7 @@ Jami masalalar soni: {test_count}.""")
 
 # Admin 
 async def admin_creat_test(update: Update, context: CallbackContext):
-    user = update.message.from_user.id
+    user = update.message.from_user
     if db.is_admin(user.id):
         await update.message.reply_text("TEST KODI ni yarating:")
         return T_ID
