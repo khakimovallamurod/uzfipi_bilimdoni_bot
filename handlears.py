@@ -166,8 +166,8 @@ async def ask_testANSWER(update: Update, context: CallbackContext):
 
 # Admin get  results
 async def admin_get_results(update: Update, context: CallbackContext):
-    user = update.message.from_user.id
-    if db.is_admin(user.id):
+    user_id = update.message.from_user.id
+    if db.is_admin(user_id):
         await update.message.reply_text("TEST KODI ni yuboring:")
         return RES_ID
     else:
