@@ -16,6 +16,7 @@ def main():
             handlears.FAK: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_fak)],
             handlears.YUN: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_yun)],
             handlears.KURS: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_kurs)],
+            handlears.TEL: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_tel)],
             handlears.NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_name)],
         },
         fallbacks=[CommandHandler('cancel', handlears.cancel)]
