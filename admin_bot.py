@@ -11,7 +11,7 @@ def main():
     dp.add_handler(CommandHandler('start', handlears.start))
 
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('register', handlears.user_register)],
+        entry_points=[MessageHandler(filters.TEXT & filters.Regex('👉 REGISTER 👈'), handlears.user_register)],
         states={
             handlears.FAK: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_fak)],
             handlears.YUN: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlears.ask_yun)],
