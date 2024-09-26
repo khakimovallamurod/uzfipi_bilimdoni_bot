@@ -116,8 +116,13 @@ Jami masalalar soni: {test_count}.""")
 
 # Admin 
 async def admin_creat_test(update: Update, context: CallbackContext):
-    await update.message.reply_text("TEST KODI ni yarating:")
-    return T_ID
+    user = update.message.from_user.id
+    if db.is_admin(user.id):
+        await update.message.reply_text("TEST KODI ni yarating:")
+        return T_ID
+    else:
+        await update.message.reply_text("❌ Siz admin emassiz!")
+        return ConversationHandler.END
 
 async def ask_testID(update: Update, context: CallbackContext):
     test_ID = update.message.text
@@ -161,8 +166,13 @@ async def ask_testANSWER(update: Update, context: CallbackContext):
 
 # Admin get  results
 async def admin_get_results(update: Update, context: CallbackContext):
-    await update.message.reply_text("TEST KODI ni yuboring:")
-    return RES_ID
+    user = update.message.from_user.id
+    if db.is_admin(user.id):
+        await update.message.reply_text("TEST KODI ni yuboring:")
+        return RES_ID
+    else:
+        await update.message.reply_text("❌ Siz admin emassiz!")
+        return ConversationHandler.END
 
 async def get_results_user(update: Update, context: CallbackContext):
     test_ID = update.message.text
