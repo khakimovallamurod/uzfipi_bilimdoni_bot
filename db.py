@@ -59,14 +59,24 @@ def result_save(true_total, false_total, test_id, chat_id):
     
 def check_user_test(test_answer: str, chat_id):
     test_data = test_answer.split('*')
+    
+    test_id, user_answer_old = test_data[0].strip(), test_data[1].strip().lower()
+    true_test = get_testid(test_id=test_id)
+    true_test_answer = true_test[0]['test_answer']
+
+    user_answer = ''
+    for alp in user_answer_old:
+        if alp.isalpha():
+            user_answer+=alp
+
+    true_test_filter = ''
+    for alp in true_test_answer:
+        if alp.isalpha():
+            true_test_filter+=alp
+    
     if len(test_data) != 2:
         return 'error_testid'
-    test_id, user_answer = test_data[0].strip(), test_data[1].strip().lower()
-    true_test = get_testid(test_id=test_id)
-    if true_test == []:
-        return None
-    true_test = true_test[0]['test_answer']
-    if len(true_test) == len(user_answer) and user_answer.isalpha():
+    elif len(true_test_filter) == len(user_answer) and user_answer.isalpha():
         true_total, false_total = 0, 0
         for t_a, t_u in zip(true_test, user_answer):
             if t_a == t_u:
