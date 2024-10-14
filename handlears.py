@@ -28,8 +28,12 @@ async def start(update: Update, context: CallbackContext):
 
 
 async def user_register(update: Update, context: CallbackContext):
-    await update.message.reply_text("Fakultetingizni kiriting:")
-    return FAK
+    user = update.message.from_user
+    if db.user_search(user.id) == None:
+        await update.message.reply_text("Fakultetingizni kiriting:")
+        return FAK
+    else:
+        await update.message.reply_text("Siz ro'yxatdan o'tgansiz.")
 
 async def ask_fak(update: Update, context: CallbackContext):
     context.user_data['fakultitet'] = update.message.text.strip().title()
